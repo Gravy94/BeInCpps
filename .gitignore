@@ -1,0 +1,7 @@
+./CAM/target/
+./OntologyRepo/target/
+./CAM/.idea
+./CAM/.settings
+./OntologyRepo/.idea
+./OntologyRepo/.settings
+./OntologyRepo/.svn
