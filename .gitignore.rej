@@ -1,0 +1,10 @@
+diff a/.gitignore b/.gitignore	(rejected hunks)
+@@ -1,7 +0,0 @@
+-./CAM/target/
+-./OntologyRepo/target/
+-./CAM/.idea
+-./CAM/.settings
+-./OntologyRepo/.idea
+-./OntologyRepo/.settings
+-./OntologyRepo/.svn
+\ No newline at end of file
