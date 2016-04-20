@@ -41,7 +41,7 @@ public class TestDriver {
 		// defaults: if you pass anything else on the commmand line, it will override the following settings
 		//String server = "http://tpvision-msee.eng.it:8180/openrdf-sesame/";
 		String server = "http://localhost:8180/openrdf-sesame/"; // if you are not running on a local instance, set the correct URL
-		String repository = "test_00"; // the name YOU gave to your test repository: change ad libitum
+		String repository = "DEFAULT"; // the name YOU gave to your test repository: change ad libitum
 		String namespace = "http://www.msee-ip.eu/ontology/bivolino#"; // you SHOULD use TA_BIVOLINO.owl, so this is unlikely to change 
 
 		if (args.length >= 3) {
