@@ -1,7 +1,6 @@
 package it.eng.cam.rest;
 
 import java.util.List;
-
 import it.eng.msee.ontorepo.ClassItem;
 import it.eng.msee.ontorepo.IndividualItem;
 import it.eng.msee.ontorepo.PropertyValueItem;
