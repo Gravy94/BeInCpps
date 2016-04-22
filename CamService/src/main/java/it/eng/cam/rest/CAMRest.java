@@ -19,7 +19,6 @@ import org.glassfish.jersey.server.ResourceConfig;
 import it.eng.cam.rest.sesame.SesameRepoInstance;
 import it.eng.msee.ontorepo.ClassItem;
 import it.eng.msee.ontorepo.IndividualItem;
-import it.eng.msee.ontorepo.PropertyValueItem;
 
 @Path("/")
 public class CAMRest extends ResourceConfig {
@@ -95,21 +94,14 @@ public class CAMRest extends ResourceConfig {
 		}
 	}
 
-	//
-	// // This method is called if XML is request
-	// @GET
-	// @Produces(MediaType.TEXT_XML)
-	// public String sayXMLHello() {
-	// return "<?xml version=\"1.0\"?>" + "<hello> Hello Jersey" + "</hello>";
-	// }
-	//
+
 	@GET
 	@Path("/classes/{className}/{assetName}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public IndividualItem getIndividual(@PathParam("className") String className,
-			@PathParam("assetName") String assetName) {
+			@PathParam("assetName") String name) {
 		try {
-			return CAMRestImpl.getIndividual(SesameRepoInstance.getRepoInstance(), className, assetName);
+			return CAMRestImpl.getIndividual(SesameRepoInstance.getRepoInstance(), className, name);
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
@@ -118,27 +110,15 @@ public class CAMRest extends ResourceConfig {
 		}
 	}
 
-	@GET
-	@Path("/classes/{className}/{assetName}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<PropertyValueItem> getIndividualAttributes(@PathParam("assetName") String assetName) {
-		try {
-			return CAMRestImpl.getIndividualAttributes(SesameRepoInstance.getRepoInstance(), assetName);
-		} catch (Exception e) {
-			logger.error(e);
-			return null;
-		} finally {
-			SesameRepoInstance.releaseRepoDaoConn();
-		}
-	}
-
+	//TODO Nel documento dei requisiti il metodo createAsset ed il metodo createAssetModel 
+	//hanno la stessa firma rest @Path("/classes/{className}/{assetName}") che non va bene !!!
 	@POST
-	@Path("/classes/{name}/{className}/{ownerName}")
+	@Path("/classes/model/{name}/{modelName}/{ownerName}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void createAssetModel(@PathParam("name") String name, @PathParam("className") String className,
+	public void createAssetModel(@PathParam("name") String name, @PathParam("modelName") String modelName,
 			@PathParam("ownerName") String ownerName) {
 		try {
-			CAMRestImpl.createAssetModel(SesameRepoInstance.getRepoInstance(), name, className, ownerName);
+			CAMRestImpl.createAssetModel(SesameRepoInstance.getRepoInstance(), name, modelName, ownerName);
 		} catch (Exception e) {
 			logger.error(e);
 		} finally {
@@ -160,7 +140,7 @@ public class CAMRest extends ResourceConfig {
 		}
 	}
 
-	@POST
+	@PUT
 	@Path("/classes/{name}/{individualName}/{referredName}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void setRelationship(@PathParam("name") String name, @PathParam("individualName") String individualName,
@@ -183,20 +163,7 @@ public class CAMRest extends ResourceConfig {
 	//// value, type);
 	//// }
 
-	@PUT
-	@Path("/classes/{name}/{individualName}/{referredName}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public void updateRelationship(@PathParam("name") String name, @PathParam("individualName") String individualName,
-			@PathParam("referredName") String referredName) {
-		try {
-			CAMRestImpl.setRelationship(SesameRepoInstance.getRepoInstance(), name, individualName, referredName);
-		} catch (Exception e) {
-			logger.error(e);
-		} finally {
-			SesameRepoInstance.releaseRepoDaoConn();
-		}
-	}
-
+	
 	//// @PUT
 	//// @Path("/classes/{name}/{individualName}/{value}/{type}")
 	//// @Consumes(MediaType.APPLICATION_JSON)

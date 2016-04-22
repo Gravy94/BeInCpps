@@ -63,11 +63,12 @@ public class CAMRestImpl {
 		dao.deleteIndividual(assetName);
 	}
 
+	//TODO Test
 	public static void removeProperty(RepositoryDAO dao, String assetName, String propertyName) {
 		dao.removeProperty(assetName, propertyName);
 
 	}
-
+	//TODO Test
 	public static List<IndividualItem> getModelsIndividuals(RepositoryDAO dao) {
 		// Neccessita di un filtro ulteriore per estrarre solo i modelli
 		return dao.getIndividuals();
@@ -81,4 +82,5 @@ public class CAMRestImpl {
 		dao.deleteOwner(ownerName);
 
 	}
+	
 }
