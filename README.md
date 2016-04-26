@@ -9,5 +9,3 @@ mvn package
 mvn verify
 ```
 `mvn verify` execute Integration Tests!
-# BeInCpps
-BeInCpps
