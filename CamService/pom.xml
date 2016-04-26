@@ -193,6 +193,7 @@
 	</build>
 	<profiles>
 		<profile>
+		<!-- Development environments -->
 			<id>dev</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
