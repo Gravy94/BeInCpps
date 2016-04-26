@@ -81,6 +81,7 @@
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
 			</resource>
 		</resources>
 		<pluginManagement>
@@ -190,5 +191,35 @@
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<sesame.url></sesame.url>
+				<sesame.repository>NEST</sesame.repository>
+				<sesame.namespace>http://www.msee-ip.eu/ontology/bivolino#</sesame.namespace>
+				<sesame.memory.store.data.dir>/data</sesame.memory.store.data.dir>
+				<sesame.rdf.file>/onthology/export.rdf</sesame.rdf.file>
+				<!-- MEMORY or HTTP supported at the moment -->
+				<sesame.repo.type>MEMORY</sesame.repo.type>
+			</properties>
+		</profile>
+		<!-- Production environment @ production server -->
+		<profile>
+			<id>prod</id>
+			<properties>
+				<sesame.url>http://localhost:8180/openrdf-sesame/</sesame.url>
+				<sesame.repository>NEST</sesame.repository>
+				<sesame.namespace>http://www.msee-ip.eu/ontology/bivolino#</sesame.namespace>
+				<sesame.memory.store.data.dir>/data</sesame.memory.store.data.dir>
+				<sesame.rdf.file>/onthology/export.rdf</sesame.rdf.file>
+				<!-- MEMORY or HTTP supported at the moment -->
+				<sesame.repo.type>HTTP</sesame.repo.type>
+			</properties>
+		</profile>
 
+	</profiles>
 </project>

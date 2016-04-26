@@ -48,7 +48,7 @@ public class Test extends Assert {
 
 	@Before
 	public void setUp() {
-		dao = SesameRepoInstance.getRepoInstanceInMemory(getClass());
+		dao = SesameRepoInstance.getRepoInstance(getClass());
 	}
 
 	@After
