@@ -31,7 +31,6 @@ import it.eng.msee.ontorepo.ClassItem;
 import it.eng.msee.ontorepo.IndividualItem;
 import it.eng.msee.ontorepo.RepositoryDAO;
 
-//TODO Utilizzare Mockito per simulare il Sesame Repo
 
 public class Test extends Assert {
 
@@ -49,7 +48,7 @@ public class Test extends Assert {
 
 	@Before
 	public void setUp() {
-		dao = SesameRepoInstance.getRepoInstance();
+		dao = SesameRepoInstance.getRepoInstanceInMemory(getClass());
 	}
 
 	@After

@@ -68,8 +68,8 @@ public class RestTestIT {
 	public void testGetIndividual() {
 		assertOk(response);
 	}
-
 	
+		
 	private int getNextRandom() {
 		Random rand = new Random();
 		return Math.abs(rand.nextInt(Integer.MAX_VALUE));

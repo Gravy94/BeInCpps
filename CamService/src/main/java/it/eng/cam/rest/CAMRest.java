@@ -33,7 +33,7 @@ public class CAMRest extends ResourceConfig {
 	@Produces(MediaType.APPLICATION_JSON)
 	public ClassItem getClassHierarchy() {
 		try {
-			return CAMRestImpl.getClassHierarchy(SesameRepoInstance.getRepoInstance());
+			return CAMRestImpl.getClassHierarchy(SesameRepoInstance.getRepoInstance(getClass()));
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
@@ -47,7 +47,7 @@ public class CAMRest extends ResourceConfig {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<IndividualItem> getIndividuals(@PathParam("className") String className) {
 		try {
-			return CAMRestImpl.getIndividuals(SesameRepoInstance.getRepoInstance(), className);
+			return CAMRestImpl.getIndividuals(SesameRepoInstance.getRepoInstance(getClass()), className);
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
@@ -61,7 +61,7 @@ public class CAMRest extends ResourceConfig {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void createClass(@PathParam("name") String name, @PathParam("parentName") String parentName) {
 		try {
-			CAMRestImpl.createClass(SesameRepoInstance.getRepoInstance(), name, parentName);
+			CAMRestImpl.createClass(SesameRepoInstance.getRepoInstance(getClass()), name, parentName);
 		} catch (Exception e) {
 			logger.error(e);
 		} finally {
@@ -74,7 +74,7 @@ public class CAMRest extends ResourceConfig {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void moveClass(@PathParam("name") String name, @PathParam("parentName") String parentName) {
 		try {
-			CAMRestImpl.moveClass(SesameRepoInstance.getRepoInstance(), name, parentName);
+			CAMRestImpl.moveClass(SesameRepoInstance.getRepoInstance(getClass()), name, parentName);
 		} catch (Exception e) {
 			logger.error(e);
 		} finally {
@@ -86,7 +86,7 @@ public class CAMRest extends ResourceConfig {
 	@Path("/classes/{name}")
 	public void deleteClass(@PathParam("name") String name) {
 		try {
-			CAMRestImpl.deleteClass(SesameRepoInstance.getRepoInstance(), name);
+			CAMRestImpl.deleteClass(SesameRepoInstance.getRepoInstance(getClass()), name);
 		} catch (Exception e) {
 			logger.error(e);
 		} finally {
@@ -101,7 +101,7 @@ public class CAMRest extends ResourceConfig {
 	public IndividualItem getIndividual(@PathParam("className") String className,
 			@PathParam("assetName") String name) {
 		try {
-			return CAMRestImpl.getIndividual(SesameRepoInstance.getRepoInstance(), className, name);
+			return CAMRestImpl.getIndividual(SesameRepoInstance.getRepoInstance(getClass()), className, name);
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
@@ -118,7 +118,7 @@ public class CAMRest extends ResourceConfig {
 	public void createAssetModel(@PathParam("name") String name, @PathParam("modelName") String modelName,
 			@PathParam("ownerName") String ownerName) {
 		try {
-			CAMRestImpl.createAssetModel(SesameRepoInstance.getRepoInstance(), name, modelName, ownerName);
+			CAMRestImpl.createAssetModel(SesameRepoInstance.getRepoInstance(getClass()), name, modelName, ownerName);
 		} catch (Exception e) {
 			logger.error(e);
 		} finally {
@@ -132,7 +132,7 @@ public class CAMRest extends ResourceConfig {
 	public void createAsset(@PathParam("name") String name, @PathParam("modelName") String modelName,
 			@PathParam("ownerName") String ownerName) {
 		try {
-			CAMRestImpl.createAsset(SesameRepoInstance.getRepoInstance(), name, modelName, ownerName);
+			CAMRestImpl.createAsset(SesameRepoInstance.getRepoInstance(getClass()), name, modelName, ownerName);
 		} catch (Exception e) {
 			logger.error(e);
 		} finally {
@@ -146,7 +146,7 @@ public class CAMRest extends ResourceConfig {
 	public void setRelationship(@PathParam("name") String name, @PathParam("individualName") String individualName,
 			@PathParam("referredName") String referredName) {
 		try {
-			CAMRestImpl.setRelationship(SesameRepoInstance.getRepoInstance(), name, individualName, referredName);
+			CAMRestImpl.setRelationship(SesameRepoInstance.getRepoInstance(getClass()), name, individualName, referredName);
 		} catch (Exception e) {
 			logger.error(e);
 		} finally {
@@ -159,7 +159,7 @@ public class CAMRest extends ResourceConfig {
 	//// @Consumes(MediaType.APPLICATION_JSON)
 	//// public void setAttribute(String name, String individualName, String
 	//// value, Class<?> type) {
-	//// SesameRepoInstance.getRepoInstance().setAttribute(name, individualName,
+	//// SesameRepoInstance.getRepoInstance(getClass()).setAttribute(name, individualName,
 	//// value, type);
 	//// }
 
@@ -169,7 +169,7 @@ public class CAMRest extends ResourceConfig {
 	//// @Consumes(MediaType.APPLICATION_JSON)
 	//// public void updateAttribute(String name, String individualName, String
 	//// value, Class<?> type) {
-	//// SesameRepoInstance.getRepoInstance().setAttribute(name, individualName,
+	//// SesameRepoInstance.getRepoInstance(getClass()).setAttribute(name, individualName,
 	//// value, type);
 	//// }
 
@@ -177,7 +177,7 @@ public class CAMRest extends ResourceConfig {
 	@Path("/classes/{className}/{assetName}")
 	public void deleteIndividual(@PathParam("assetName") String assetName) {
 		try {
-			CAMRestImpl.deleteIndividual(SesameRepoInstance.getRepoInstance(), assetName);
+			CAMRestImpl.deleteIndividual(SesameRepoInstance.getRepoInstance(getClass()), assetName);
 		} catch (Exception e) {
 			logger.error(e);
 		} finally {
@@ -190,7 +190,7 @@ public class CAMRest extends ResourceConfig {
 	public void removeProperty(@PathParam("assetName") String assetName,
 			@PathParam(" propertyName") String propertyName) {
 		try {
-			CAMRestImpl.removeProperty(SesameRepoInstance.getRepoInstance(), assetName, propertyName);
+			CAMRestImpl.removeProperty(SesameRepoInstance.getRepoInstance(getClass()), assetName, propertyName);
 		} catch (Exception e) {
 			logger.error(e);
 		} finally {
@@ -203,7 +203,7 @@ public class CAMRest extends ResourceConfig {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<IndividualItem> getIndividuals() {
 		try {
-			return CAMRestImpl.getIndividuals(SesameRepoInstance.getRepoInstance());
+			return CAMRestImpl.getIndividuals(SesameRepoInstance.getRepoInstance(getClass()));
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
@@ -218,7 +218,7 @@ public class CAMRest extends ResourceConfig {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<IndividualItem> getModelsIndividuals() {
 		try {
-			return CAMRestImpl.getIndividuals(SesameRepoInstance.getRepoInstance());
+			return CAMRestImpl.getIndividuals(SesameRepoInstance.getRepoInstance(getClass()));
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
@@ -233,7 +233,7 @@ public class CAMRest extends ResourceConfig {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<String> getOwners() {
 		try {
-			return CAMRestImpl.getOwners(SesameRepoInstance.getRepoInstance());
+			return CAMRestImpl.getOwners(SesameRepoInstance.getRepoInstance(getClass()));
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
@@ -247,7 +247,7 @@ public class CAMRest extends ResourceConfig {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void createOwner(@PathParam("ownerName") String ownerName) {
 		try {
-			CAMRestImpl.createOwner(SesameRepoInstance.getRepoInstance(), ownerName);
+			CAMRestImpl.createOwner(SesameRepoInstance.getRepoInstance(getClass()), ownerName);
 		} catch (Exception e) {
 			logger.error(e);
 		} finally {
@@ -259,7 +259,7 @@ public class CAMRest extends ResourceConfig {
 	@Path("/owners/{ownerName}")
 	public void deleteOwner(@PathParam("ownerName") String ownerName) {
 		try {
-			CAMRestImpl.deleteOwner(SesameRepoInstance.getRepoInstance(), ownerName);
+			CAMRestImpl.deleteOwner(SesameRepoInstance.getRepoInstance(getClass()), ownerName);
 		} catch (Exception e) {
 			logger.error(e);
 		} finally {

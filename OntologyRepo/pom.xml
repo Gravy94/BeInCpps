@@ -3,15 +3,22 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>OntologyRepo</groupId>
 	<artifactId>OntologyRepo</artifactId>
-	<version>1.0</version>
+	<version>1.1</version>
 	<repositories>
 		<repository>
 			<id>JBOSS</id>
 			<name>JBOSS - Maven releases</name>
 			<url>https://repository.jboss.org/nexus/content/repositories/thirdparty-releases</url>
 		</repository>
-
 	</repositories>
+	
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+	
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>

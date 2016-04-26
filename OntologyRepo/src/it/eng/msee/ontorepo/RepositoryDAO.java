@@ -1,5 +1,6 @@
 package it.eng.msee.ontorepo;
 
+import java.io.File;
 import java.util.List;
 
 import org.w3c.dom.Document;
@@ -317,4 +318,14 @@ public interface RepositoryDAO {
 	 */
 	public void removeProperty(String name, String individualName)
 			throws IllegalArgumentException, RuntimeException;
+	
+	/**
+	 * Add a file in format RDF to the repository.
+	 * @param rdfFile The file xml RDF containing Ontology
+	 * @param (optional) The Base URI where to contain the definitions in file (ex. http://example.org/example/local)
+	 * @param forceAdd Add file RDF content also if the repo in not empty
+	 * @author ascatox at 2016-04-26
+	 */
+	public void addRdfFileToRepo(File rdfFile, String baseUri, boolean forceAdd)
+			throws RuntimeException;
 }

@@ -10,6 +10,7 @@ import it.eng.msee.ontorepo.Util;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -43,9 +44,15 @@ import org.openrdf.query.TupleQueryResult;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.RepositoryResult;
+import org.openrdf.repository.base.AbstractRepository;
 import org.openrdf.repository.http.HTTPRepository;
+import org.openrdf.repository.manager.RemoteRepositoryManager;
+import org.openrdf.repository.sail.SailRepository;
+import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFHandlerException;
+import org.openrdf.rio.RDFParseException;
 import org.openrdf.rio.rdfxml.RDFXMLWriter;
+import org.openrdf.sail.memory.MemoryStore;
 
 /**
  * Implementation of {@link RepositoryDAO} for accessing the Reference Ontology
@@ -152,8 +159,9 @@ public class Sesame2RepositoryDAO implements RepositoryDAO {
 	private static final String QUERY_DEPENDENCIES =
 			"SELECT ?name " +
 			"WHERE { ?name ?x <" + VARTAG + "> } "; // replace VARTAG by qualified name
-
-	private HTTPRepository repo;
+	
+	//Modified by @ascatox 2016-04-26 to use MemoryStore in Unit Test
+	private AbstractRepository repo;
 	private final ValueFactory vf;
 	private final URI ni;
 	private final String ns;
@@ -235,6 +243,8 @@ public class Sesame2RepositoryDAO implements RepositoryDAO {
 				ns = namespace;
 			}
 		} catch (RepositoryException e) {
+//			RemoteRepositoryManager repo = new RemoteRepositoryManager(server);
+//			repo.initialize();
 			throw new RuntimeException(e);
 		} finally {
 			if (null != con) {
@@ -245,6 +255,68 @@ public class Sesame2RepositoryDAO implements RepositoryDAO {
 				}
 			}
 		}
+	}
+	/**
+	 * WARNING!!!
+	 ***ANY DATA WILL BE LOST!!! DON'T USE IN PRODUCTION SYTEMS USE INSTEAD THE ABOVE CONSTRUCTORS !!!**.
+	 * Constructs a RepositoryDAO for accessing a Reference Ontology in a given
+	 * Sesame2 Repository. The Repository is identified only by **namespace**.
+	 * The given Repository is in memory only for test purpose.
+	 * If a namespace argument is provided, it becomes the implicit
+	 * namespace for this instance (note that no guarantee is given that this namespace
+	 * actually exists in the Reference Ontology); otherwise, the implicit namespace
+	 * is set to the default namespace of the Reference Ontology in the Repository.
+	 * In the latter case if no default namespace is declared in the Reference Ontology,
+	 * the initialization fails.
+	 * <p />
+	 * <b>WARNING!</b> At the time of writing, using the default namespace fails
+	 * even if it is actually declared in the ontology data - might be a problem
+	 * with the Sesame API, but anyhow you should declare your implicit namespace
+	 * in the 3-argument constructor: don't use the 2-argument one!
+	 * @param (Optional) dataDir is the directory where to save the memory store files.
+	 * @param namespace the namespace to be used as the implicit namespace, or null
+	 * if the default namespace declared in the Reference Ontology should be used as
+	 * the implicit namespace
+	 * @throws RuntimeException if the Repository cannot be accessed, or the Reference
+	 * Ontology cannot be read for any reason
+	 * @throws IllegalStateException if no namespace argument was provided, and the
+	 * Reference Ontology declares no default namespace
+	 */
+	public Sesame2RepositoryDAO(File dataDir, String namespace)
+			throws RuntimeException, IllegalStateException {
+		if (null != namespace && !namespace.endsWith(Util.PATH_TERM)) {
+			throw new IllegalArgumentException("Namespace must end with " + Util.PATH_TERM);
+		}
+		if(null != dataDir)
+			repo = new SailRepository(new MemoryStore(dataDir));
+		else
+			repo = new SailRepository(new MemoryStore());
+		RepositoryConnection con = null;
+		try {
+			repo.initialize();
+			vf = repo.getValueFactory();
+			ni = vf.createURI("http://www.w3.org/2002/07/owl#NamedIndividual");
+			if (null == namespace || namespace.isEmpty()) {
+				// no implicit namespace was provided, try to get the default one
+				ns = con.getNamespace(null);
+				if (null == ns) {
+					throw new IllegalStateException("No default namespace is available");
+				}
+			} else {
+				// we get the namespace as-is
+				ns = namespace;
+			}
+		} catch (RepositoryException e) {
+			throw new RuntimeException(e);
+		}finally {
+			if (null != con) {
+				try {
+					con.close();
+				} catch (RepositoryException e) {
+					e.printStackTrace();
+				}
+			}
+		} 
 	}
 	
 	/**
@@ -273,7 +345,40 @@ public class Sesame2RepositoryDAO implements RepositoryDAO {
 			repo = null;
 		}
  	}
-
+	
+	/**
+	 * Add a file in format RDF to the repository.
+	 * @param rdfFile The file xml RDF containing Ontology
+	 * @param (optional) The Base URI where to contain the definitions in file (ex. http://example.org/example/local)
+	 * @param forceAdd Add file RDF content also if the repo in not empty
+	 * @author ascatox at 2016-04-26
+	 */
+	
+	public void addRdfFileToRepo(File rdfFile, String baseUri, boolean forceAdd) throws RuntimeException {
+		if(null == repo)
+			throw new IllegalStateException("No Repo is available");
+		if (null == rdfFile ) {
+			throw new IllegalArgumentException("RDF File is mandatory");
+		}
+		if (null == baseUri || baseUri.isEmpty()) {
+			baseUri="file://"+rdfFile.getAbsolutePath();
+		}
+		try (RepositoryConnection con = repo.getConnection()) {
+			long size = con.size();
+			if(size == 0 || forceAdd)
+				con.add(rdfFile, baseUri, RDFFormat.RDFXML);
+		} catch (RDFParseException e) {
+			throw new RuntimeException(e);
+		} catch (RepositoryException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	
 	@Override
 	public String getImplicitNamespace() {
 		return ns;

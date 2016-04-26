@@ -1,5 +1,8 @@
 package it.eng.cam.rest.sesame;
 
+import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
@@ -15,42 +18,85 @@ public class SesameRepoInstance {
 	private static String SESAME_REPO_URL = null;
 	private static String SESAME_REPO_NAME = null;
 	private static String SESAME_REPO_NAMESPACE = null;
-	
+	private static String SESAME_MEMORY_STORE_DATA_DIR = null;
+	private static String SESAME_RDF_FILE = null;
+
 	static {
 		try {
 			finder = ResourceBundle.getBundle("cam-service");
 			SESAME_REPO_URL = finder.getString("sesame.url");
 			SESAME_REPO_NAME = finder.getString("sesame.repository");
 			SESAME_REPO_NAMESPACE = finder.getString("sesame.namespace");
+			SESAME_MEMORY_STORE_DATA_DIR = finder.getString("sesame.memory.store.data.dir");
+			SESAME_RDF_FILE = finder.getString("sesame.rdf.file");
 		} catch (MissingResourceException e) {
 			logger.warning(e.getMessage());
 		}
 	}
 
 	// SINGLETON
-	public static RepositoryDAO getRepoInstance() {
+	public static RepositoryDAO getRepoInstance(Class<?> clazz) {
 		if (repoInstance == null) {
 			synchronized (SesameRepoInstance.class) {
 				if (repoInstance == null) {
 					repoInstance = new Sesame2RepositoryDAO(SESAME_REPO_URL, SESAME_REPO_NAME, SESAME_REPO_NAMESPACE);
+					addRdfFileToInstance(clazz, false);
+				}
+			}
+		}
+		return repoInstance;
+	}
+
+	// SINGLETON
+	public static RepositoryDAO getRepoInstance( Class<?> clazz, String sesameRepoUrl, String sesameRepoName,
+			String sesameRepoNameSpace) {
+		if (repoInstance == null) {
+			synchronized (SesameRepoInstance.class) {
+				if (repoInstance == null) {
+					repoInstance = new Sesame2RepositoryDAO(sesameRepoUrl, sesameRepoName, sesameRepoNameSpace);
+					addRdfFileToInstance(clazz, false);
+				}
+			}
+		}
+		return repoInstance;
+	}
+
+	// SINGLETON IN MEMORY
+	// DON'T USE IN PRODUCTION
+	public static RepositoryDAO getRepoInstanceInMemory(Class<?> clazz) {
+		logger.info(
+			"Using in MEMORY Store Repository DOESN'T KEEP DATA\nONLY For TEST Purpose!");
+		if (repoInstance == null) {
+			synchronized (SesameRepoInstance.class) {
+				if (repoInstance == null) {
+					URL url = clazz.getResource(SESAME_MEMORY_STORE_DATA_DIR);
+					File dataDir = null;
+					try {
+						dataDir = new File(url.toURI());
+					} catch (URISyntaxException e) {
+						logger.severe(e.getMessage());
+					}
+					repoInstance = new Sesame2RepositoryDAO(dataDir, SESAME_REPO_NAMESPACE);
+					addRdfFileToInstance(clazz, false);
 
 				}
 			}
 		}
 		return repoInstance;
 	}
-	
-	// SINGLETON
-	public static RepositoryDAO getRepoInstance(String sesameRepoUrl, String sesameRepoName, String sesameRepoNameSpace) {
-		if (repoInstance == null) {
-			synchronized (SesameRepoInstance.class) {
-				if (repoInstance == null) {
-					repoInstance = new Sesame2RepositoryDAO(sesameRepoUrl, sesameRepoName, sesameRepoNameSpace);
 
-				}
-			}
+	private static void addRdfFileToInstance(Class<?> clazz, boolean forceAdd) {
+		if (null == repoInstance)
+			logger.severe("Impossible to get a Repository connection use getRepoInstance()");
+		try {
+			URL url = clazz.getResource(SESAME_RDF_FILE);
+			File file = new File(url.toURI());
+			repoInstance.addRdfFileToRepo(file, null, forceAdd);
+		} catch (RuntimeException e) {
+			logger.severe(e.getMessage());
+		} catch (URISyntaxException e) {
+			logger.severe(e.getMessage());
 		}
-		return repoInstance;
 	}
 
 	public synchronized static void releaseRepoDaoConn() {
