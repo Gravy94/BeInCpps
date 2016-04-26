@@ -8,4 +8,4 @@ cd ../CAMService
 mvn package
 mvn verify
 ```
-`mvn verify` execute Integration Tests!
+`mvn verify` execute integration tests!
