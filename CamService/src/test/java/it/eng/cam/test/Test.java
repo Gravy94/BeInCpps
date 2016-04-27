@@ -93,8 +93,8 @@ public class Test extends Assert {
 	public void getIndividualForClassAndAsset() {
 		String className = dao.getClassHierarchy().getClassName();
 		String assetName = "New_Asset_"+getNextRandom();
-		IndividualItem individual = CAMRestImpl.getIndividual(dao, className, assetName);
-		assertNotNull("Individuals for class " + className + " and asset " + assetName + " are null", individual);
+		IndividualItem individual = CAMRestImpl.getIndividual(dao, className);
+		assertNotNull("Individuals for class " + className + " are null", individual);
 	}
 
 	@org.junit.Test()

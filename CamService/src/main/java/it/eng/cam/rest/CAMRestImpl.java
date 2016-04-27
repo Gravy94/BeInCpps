@@ -24,7 +24,7 @@ public class CAMRestImpl {
 		return dao.getIndividuals(className);
 	}
 
-	public static IndividualItem getIndividual(RepositoryDAO dao, String className, String assetName) {
+	public static IndividualItem getIndividual(RepositoryDAO dao, String className) {
 		return dao.getIndividual(className);
 	}
 

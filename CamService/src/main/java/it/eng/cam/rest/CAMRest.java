@@ -94,21 +94,20 @@ public class CAMRest extends ResourceConfig {
 		}
 	}
 
-
-	@GET
-	@Path("/classes/{className}/{assetName}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public IndividualItem getIndividual(@PathParam("className") String className,
-			@PathParam("assetName") String name) {
-		try {
-			return CAMRestImpl.getIndividual(SesameRepoInstance.getRepoInstance(getClass()), className, name);
-		} catch (Exception e) {
-			logger.error(e);
-			return null;
-		} finally {
-			SesameRepoInstance.releaseRepoDaoConn();
-		}
-	}
+//
+//	@GET
+//	@Path("/classes/{className}")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public IndividualItem getIndividual(@PathParam("className") String className) {
+//		try {
+//			return CAMRestImpl.getIndividual(SesameRepoInstance.getRepoInstance(getClass()), className);
+//		} catch (Exception e) {
+//			logger.error(e);
+//			return null;
+//		} finally {
+//			SesameRepoInstance.releaseRepoDaoConn();
+//		}
+//	}
 
 	//TODO Nel documento dei requisiti il metodo createAsset ed il metodo createAssetModel 
 	//hanno la stessa firma rest @Path("/classes/{className}/{assetName}") che non va bene !!!

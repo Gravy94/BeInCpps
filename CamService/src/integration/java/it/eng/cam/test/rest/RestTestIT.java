@@ -70,7 +70,7 @@ public class RestTestIT {
 		assertOk(response);
 	}
 
-	@HttpTest(method = Method.GET, path = "/classes/{rootName}/{className}")
+	@HttpTest(method = Method.GET, path = "/classes/{className}")
 	public void testGetIndividual() {
 		assertOk(response);
 	}
