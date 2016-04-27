@@ -206,6 +206,7 @@
 				<sesame.rdf.file>/onthology/export.rdf</sesame.rdf.file>
 				<!-- MEMORY or HTTP supported at the moment -->
 				<sesame.repo.type>MEMORY</sesame.repo.type>
+				<destination.url.integration>http://localhost:8080/${artifactId}/</destination.url.integration>
 			</properties>
 		</profile>
 		<!-- Production environment @ production server -->
@@ -219,6 +220,7 @@
 				<sesame.rdf.file>/onthology/export.rdf</sesame.rdf.file>
 				<!-- MEMORY or HTTP supported at the moment -->
 				<sesame.repo.type>HTTP</sesame.repo.type>
+				<destination.url.integration>http://localhost:8080/${artifactId}/</destination.url.integration>
 			</properties>
 		</profile>
 

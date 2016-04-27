@@ -3,6 +3,7 @@ package it.eng.cam.test.rest;
 import static com.eclipsesource.restfuse.Assert.assertOk;
 
 import java.util.Random;
+import java.util.ResourceBundle;
 
 import javax.ws.rs.PathParam;
 
@@ -25,15 +26,18 @@ public class RestTestIT {
 
 	@Context
 	private Response response;
+	
+	private static ResourceBundle finder = ResourceBundle.getBundle("cam-service");
 
 	private Destination getDestination() {
-		Destination destination = new Destination(this, "http://localhost:8080/CAMService/"); // TODO
-																								// Configuration
+		Destination destination = new Destination(this, finder.getString("destination.url.integration"));
 		RequestContext context = destination.getRequestContext();
-		context.addPathSegment("rootName", "Thing").addPathSegment("className", "Individual_Management")
-				.addPathSegment("classNameToCreate", "New_Class_" + getNextRandom())
-				.addPathSegment("classNameToMove", "Government").addPathSegment("classNameToDelete", "Surface_related")
-				.addPathSegment("assetName", "Mass_Customization_Production");
+		context.addPathSegment("rootName", "Thing")
+		.addPathSegment("className", "Individual_Management")
+		.addPathSegment("classNameToCreate", "New_Class_" + getNextRandom())
+		.addPathSegment("classNameToMove", "Government")
+		.addPathSegment("classNameToDelete", "Surface_related")
+		.addPathSegment("assetName", "Mass_Customization_Production");
 		return destination;
 	}
 
