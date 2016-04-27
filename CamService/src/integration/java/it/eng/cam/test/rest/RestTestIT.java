@@ -58,59 +58,59 @@ public class RestTestIT {
 		assertOk(response);
 	}
 
-	@HttpTest(method = Method.GET, path = "/classes/{rootName}")
+	@HttpTest(method = Method.GET, path = "/classes/{rootName}", order = 2)
 	public void testGetIndividualsByClasses() {
 		assertOk(response);
 	}
 
-	@HttpTest(method = Method.POST, path = "/classes/{classNameToCreate}/{rootName}")
+	@HttpTest(method = Method.POST, path = "/classes/{classNameToCreate}/{rootName}", order = 3)
 	public void testCreateClass() {
 		assertOk(response);
 	}
 
-	@HttpTest(method = Method.PUT, path = "/classes/{classNameToMove}/{className}")
+	@HttpTest(method = Method.PUT, path = "/classes/{classNameToMove}/{className}", order = 4)
 	public void testMoveClass() {
 		assertOk(response);
 	}
 
-	//@HttpTest(method = Method.DELETE, path = "/classes/{classNameToMove}/{classNameToDelete}")
+	//@HttpTest(method = Method.DELETE, path = "/classes/{classNameToMove}/{classNameToDelete}", order = 5)
 	public void testDeleteClass(@PathParam("name") String name) {
 		assertOk(response);
 	}
 
-	@HttpTest(method = Method.GET, path = "/classes/{className}")
+	@HttpTest(method = Method.GET, path = "/classes/{className}", order = 6)
 	public void testGetIndividual() {
 		assertOk(response);
 	}
 	
 	
-	@HttpTest(method = Method.POST, path = "/classes/model/{className}/{assetModelNameToCreate}/{ownerName}")
+	@HttpTest(method = Method.POST, path = "/classes/model/{className}/{assetModelNameToCreate}/{ownerName}", order = 7)
 	public void testCreateAssetModel(){
 		assertOk(response);
 	}
 
-	@HttpTest(method = Method.POST, path ="/classes/{assetNameToCreate}/{assetModelName}/{ownerName}")
+	@HttpTest(method = Method.POST, path ="/classes/{assetNameToCreate}/{assetModelName}/{ownerName}", order = 8)
 	public void testCreateAsset() {
 		assertOk(response);
 	}
 
-	@HttpTest(method = Method.PUT, path ="/classes/{relationShipName}/{assetName2}/{assetName3}")
+	@HttpTest(method = Method.PUT, path ="/classes/{relationShipName}/{assetName2}/{assetName3}", order = 9)
 	public void testSetRelationship() {
 		assertOk(response);
 	}
 
-	//@HttpTest(method = Method.DELETE, path ="/classes/{parentNameAssetToDelete}/{assetNameToDelete}")
+	//@HttpTest(method = Method.DELETE, path ="/classes/{parentNameAssetToDelete}/{assetNameToDelete}", order = 11)
 	public void testDeleteIndividual() {
 		assertOk(response);
 	}
 	
 	//TODO
-	//@HttpTest(method = Method.DELETE, path ="/classes/{propertyName}/{assetName}")
+	//@HttpTest(method = Method.DELETE, path ="/classes/{propertyName}/{assetName}", order = 16)
 	public void testRemoveProperty() {
 		assertOk(response);
 	}
 
-	@HttpTest(method = Method.GET, path = "/assets")
+	@HttpTest(method = Method.GET, path = "/assets", order = 17)
 	public void testGetIndividuals() {
 		assertOk(response);
 	}
@@ -132,17 +132,17 @@ public class RestTestIT {
 //		// necessita di un filtro ulteriore
 //	}
 
-	@HttpTest(method = Method.GET, path = "/owners")
+	@HttpTest(method = Method.GET, path = "/owners", order = 0)
 	public void testGetOwners() {
 		assertOk(response);
 	}
 
-	@HttpTest(method = Method.POST, path = "/owners/{ownerNameToCreate}")
+	@HttpTest(method = Method.POST, path = "/owners/{ownerNameToCreate}", order = 0)
 	public void testCreateOwner() {
 		assertOk(response);
 	}
 
-	//@HttpTest(method = Method.DELETE, path = "/owners/{ownerName}")
+	//@HttpTest(method = Method.DELETE, path = "/owners/{ownerName}", order = 0)
 	public void testDeleteOwner() {
 		assertOk(response);
 	}
