@@ -27,9 +27,9 @@ import org.w3c.dom.Document;
 
 import it.eng.cam.rest.CAMRestImpl;
 import it.eng.cam.rest.sesame.SesameRepoInstance;
-import it.eng.msee.ontorepo.ClassItem;
-import it.eng.msee.ontorepo.IndividualItem;
-import it.eng.msee.ontorepo.RepositoryDAO;
+import it.eng.ontorepo.ClassItem;
+import it.eng.ontorepo.IndividualItem;
+import it.eng.ontorepo.RepositoryDAO;
 
 
 public class Test extends Assert {

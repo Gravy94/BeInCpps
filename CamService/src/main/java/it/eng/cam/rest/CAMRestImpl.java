@@ -1,10 +1,10 @@
 package it.eng.cam.rest;
 
 import java.util.List;
-import it.eng.msee.ontorepo.ClassItem;
-import it.eng.msee.ontorepo.IndividualItem;
-import it.eng.msee.ontorepo.PropertyValueItem;
-import it.eng.msee.ontorepo.RepositoryDAO;
+import it.eng.ontorepo.ClassItem;
+import it.eng.ontorepo.IndividualItem;
+import it.eng.ontorepo.PropertyValueItem;
+import it.eng.ontorepo.RepositoryDAO;
 
 public class CAMRestImpl {
 

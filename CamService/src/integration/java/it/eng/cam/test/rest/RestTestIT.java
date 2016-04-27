@@ -28,16 +28,18 @@ public class RestTestIT {
 	private Response response;
 	
 	private static ResourceBundle finder = ResourceBundle.getBundle("cam-service");
+	private static ResourceBundle vocabulary = ResourceBundle.getBundle("vocabulary-integration");
+
 
 	private Destination getDestination() {
 		Destination destination = new Destination(this, finder.getString("destination.url.integration"));
 		RequestContext context = destination.getRequestContext();
-		context.addPathSegment("rootName", "Thing")
-		.addPathSegment("className", "Individual_Management")
-		.addPathSegment("classNameToCreate", "New_Class_" + getNextRandom())
-		.addPathSegment("classNameToMove", "Government")
-		.addPathSegment("classNameToDelete", "Surface_related")
-		.addPathSegment("assetName", "Mass_Customization_Production");
+		context.addPathSegment("rootName", vocabulary.getString("rootName"))
+		.addPathSegment("className",  vocabulary.getString("className"))
+		.addPathSegment("classNameToCreate",  vocabulary.getString("classNameToCreate"))
+		.addPathSegment("classNameToMove", vocabulary.getString("classNameToMove"))
+		.addPathSegment("classNameToDelete", vocabulary.getString("classNameToDelete"))
+		.addPathSegment("assetName", vocabulary.getString("assetName"));
 		return destination;
 	}
 

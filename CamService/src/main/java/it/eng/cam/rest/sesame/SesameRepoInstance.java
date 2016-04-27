@@ -8,8 +8,8 @@ import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
 
-import it.eng.msee.ontorepo.RepositoryDAO;
-import it.eng.msee.ontorepo.sesame2.Sesame2RepositoryDAO;
+import it.eng.ontorepo.RepositoryDAO;
+import it.eng.ontorepo.sesame2.Sesame2RepositoryDAO;
 
 public class SesameRepoInstance {
 	private static RepositoryDAO repoInstance;
@@ -49,7 +49,7 @@ public class SesameRepoInstance {
 		return repoInstance;
 	}
 
-	private static RepositoryDAO getRepoInstanceImpl(Class<?> clazz) {
+	public static RepositoryDAO getRepoInstanceImpl(Class<?> clazz) {
 		if (repoInstance == null) {
 			synchronized (SesameRepoInstance.class) {
 				if (repoInstance == null) {
@@ -63,7 +63,7 @@ public class SesameRepoInstance {
 	
 	// SINGLETON IN MEMORY
 	// DON'T USE IN PRODUCTION
-	private static RepositoryDAO getRepoInstanceInMemoryImpl(Class<?> clazz) {
+	public static RepositoryDAO getRepoInstanceInMemoryImpl(Class<?> clazz) {
 		logger.warn("\nUsing in MEMORY Store Repository DOESN'T KEEP DATA\nONLY For DEV Purpose!");
 		if (repoInstance == null) {
 			synchronized (SesameRepoInstance.class) {
