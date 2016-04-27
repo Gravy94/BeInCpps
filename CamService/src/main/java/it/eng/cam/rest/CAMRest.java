@@ -58,7 +58,6 @@ public class CAMRest extends ResourceConfig {
 
 	@POST
 	@Path("/classes/{name}/{parentName}")
-	@Consumes(MediaType.APPLICATION_JSON)
 	public void createClass(@PathParam("name") String name, @PathParam("parentName") String parentName) {
 		try {
 			CAMRestImpl.createClass(SesameRepoInstance.getRepoInstance(getClass()), name, parentName);
@@ -71,7 +70,6 @@ public class CAMRest extends ResourceConfig {
 
 	@PUT
 	@Path("/classes/{name}/{parentName}")
-	@Consumes(MediaType.APPLICATION_JSON)
 	public void moveClass(@PathParam("name") String name, @PathParam("parentName") String parentName) {
 		try {
 			CAMRestImpl.moveClass(SesameRepoInstance.getRepoInstance(getClass()), name, parentName);
@@ -94,26 +92,30 @@ public class CAMRest extends ResourceConfig {
 		}
 	}
 
-//
-//	@GET
-//	@Path("/classes/{className}")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public IndividualItem getIndividual(@PathParam("className") String className) {
-//		try {
-//			return CAMRestImpl.getIndividual(SesameRepoInstance.getRepoInstance(getClass()), className);
-//		} catch (Exception e) {
-//			logger.error(e);
-//			return null;
-//		} finally {
-//			SesameRepoInstance.releaseRepoDaoConn();
-//		}
-//	}
+	// TODO Questo metodo come firma è equivalente a getIndividuals
+	// @GET
+	// @Path("/classes/{className}")
+	// @Produces(MediaType.APPLICATION_JSON)
+	// public IndividualItem getIndividual(@PathParam("className") String
+	// className) {
+	// try {
+	// return
+	// CAMRestImpl.getIndividual(SesameRepoInstance.getRepoInstance(getClass()),
+	// className);
+	// } catch (Exception e) {
+	// logger.error(e);
+	// return null;
+	// } finally {
+	// SesameRepoInstance.releaseRepoDaoConn();
+	// }
+	// }
 
-	//TODO Nel documento dei requisiti il metodo createAsset ed il metodo createAssetModel 
-	//hanno la stessa firma rest @Path("/classes/{className}/{assetName}") che non va bene !!!
+	// TODO Nel documento dei requisiti il metodo createAsset ed il metodo
+	// createAssetModel
+	// hanno la stessa firma rest @Path("/classes/{className}/{assetName}") che
+	// non va bene !!!
 	@POST
 	@Path("/classes/model/{name}/{modelName}/{ownerName}")
-	@Consumes(MediaType.APPLICATION_JSON)
 	public void createAssetModel(@PathParam("name") String name, @PathParam("modelName") String modelName,
 			@PathParam("ownerName") String ownerName) {
 		try {
@@ -127,7 +129,6 @@ public class CAMRest extends ResourceConfig {
 
 	@POST
 	@Path("/classes/{name}/{modelName}/{ownerName}")
-	@Consumes(MediaType.APPLICATION_JSON)
 	public void createAsset(@PathParam("name") String name, @PathParam("modelName") String modelName,
 			@PathParam("ownerName") String ownerName) {
 		try {
@@ -141,11 +142,11 @@ public class CAMRest extends ResourceConfig {
 
 	@PUT
 	@Path("/classes/{name}/{individualName}/{referredName}")
-	@Consumes(MediaType.APPLICATION_JSON)
 	public void setRelationship(@PathParam("name") String name, @PathParam("individualName") String individualName,
 			@PathParam("referredName") String referredName) {
 		try {
-			CAMRestImpl.setRelationship(SesameRepoInstance.getRepoInstance(getClass()), name, individualName, referredName);
+			CAMRestImpl.setRelationship(SesameRepoInstance.getRepoInstance(getClass()), name, individualName,
+					referredName);
 		} catch (Exception e) {
 			logger.error(e);
 		} finally {
@@ -153,27 +154,25 @@ public class CAMRest extends ResourceConfig {
 		}
 	}
 
-	//// @POST
-	//// @Path("/classes/{name}/{individualName}/{value}/{type}")
-	//// @Consumes(MediaType.APPLICATION_JSON)
-	//// public void setAttribute(String name, String individualName, String
-	//// value, Class<?> type) {
-	//// SesameRepoInstance.getRepoInstance(getClass()).setAttribute(name, individualName,
-	//// value, type);
-	//// }
-
-	
-	//// @PUT
-	//// @Path("/classes/{name}/{individualName}/{value}/{type}")
-	//// @Consumes(MediaType.APPLICATION_JSON)
-	//// public void updateAttribute(String name, String individualName, String
-	//// value, Class<?> type) {
-	//// SesameRepoInstance.getRepoInstance(getClass()).setAttribute(name, individualName,
-	//// value, type);
-	//// }
+	@POST
+	@Path("/classes/{name}/{individualName}/{value}/{type}")
+	public void setAttribute(@PathParam("name") String name, @PathParam("individualName") String individualName,
+			@PathParam("value") String value, @PathParam("type") String type) {
+		try {
+			CAMRestImpl.setAttribute(SesameRepoInstance.getRepoInstance(getClass()), name, individualName, value, type);
+		} catch (IllegalArgumentException e) {
+			logger.error(e);
+		} catch (ClassNotFoundException e) {
+			logger.error(e);
+		} catch (RuntimeException e) {
+			logger.error(e);
+		} finally {
+			SesameRepoInstance.releaseRepoDaoConn();
+		}
+	}
 
 	@DELETE
-	@Path("/classes/{className}/{assetName}")
+	@Path("/classes/individual/{className}/{assetName}")
 	public void deleteIndividual(@PathParam("assetName") String assetName) {
 		try {
 			CAMRestImpl.deleteIndividual(SesameRepoInstance.getRepoInstance(getClass()), assetName);
@@ -185,11 +184,11 @@ public class CAMRest extends ResourceConfig {
 	}
 
 	@DELETE
-	@Path("/classes/{className}/{assetName}/{propertyName}")
-	public void removeProperty(@PathParam("assetName") String assetName,
-			@PathParam(" propertyName") String propertyName) {
+	@Path("/classes/property/{propertyName}/{assetName}")
+	public void removeProperty(@PathParam("propertyName") String propertyName,
+			@PathParam(" assetName") String assetName) {
 		try {
-			CAMRestImpl.removeProperty(SesameRepoInstance.getRepoInstance(getClass()), assetName, propertyName);
+			CAMRestImpl.removeProperty(SesameRepoInstance.getRepoInstance(getClass()), propertyName, assetName);
 		} catch (Exception e) {
 			logger.error(e);
 		} finally {
@@ -243,7 +242,6 @@ public class CAMRest extends ResourceConfig {
 
 	@POST
 	@Path("/owners/{ownerName}")
-	@Consumes(MediaType.APPLICATION_JSON)
 	public void createOwner(@PathParam("ownerName") String ownerName) {
 		try {
 			CAMRestImpl.createOwner(SesameRepoInstance.getRepoInstance(getClass()), ownerName);

@@ -1,6 +1,9 @@
 package it.eng.cam.rest;
 
 import java.util.List;
+
+import javax.ws.rs.PathParam;
+
 import it.eng.ontorepo.ClassItem;
 import it.eng.ontorepo.IndividualItem;
 import it.eng.ontorepo.PropertyValueItem;
@@ -13,7 +16,7 @@ public class CAMRestImpl {
 	}
 
 	public static List<IndividualItem> getIndividuals(RepositoryDAO dao) {
-			return dao.getIndividuals();
+		return dao.getIndividuals();
 	}
 
 	public static List<String> getOwners(RepositoryDAO dao) {
@@ -63,12 +66,13 @@ public class CAMRestImpl {
 		dao.deleteIndividual(assetName);
 	}
 
-	//TODO Test
+	// TODO Test
 	public static void removeProperty(RepositoryDAO dao, String assetName, String propertyName) {
 		dao.removeProperty(assetName, propertyName);
 
 	}
-	//TODO Test
+
+	// TODO Test
 	public static List<IndividualItem> getModelsIndividuals(RepositoryDAO dao) {
 		// Neccessita di un filtro ulteriore per estrarre solo i modelli
 		return dao.getIndividuals();
@@ -82,5 +86,10 @@ public class CAMRestImpl {
 		dao.deleteOwner(ownerName);
 
 	}
-	
+
+	public static void setAttribute(RepositoryDAO dao, String name, String individualName, String value, String type)
+			throws IllegalArgumentException, ClassNotFoundException, RuntimeException {
+		dao.setAttribute(name, individualName, value, Class.forName(type));
+	}
+
 }

@@ -94,7 +94,7 @@ public class ClassItem extends Tuple {
 	 * Reference Ontology. 
 	 * @return
 	 */
-	@JsonIgnore
+	@JsonIgnore 
 	public List<ClassItem> getSubClasses() {
 		return children;
 	}
