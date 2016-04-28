@@ -64,7 +64,7 @@ public class SesameRepoInstance {
 	// SINGLETON IN MEMORY
 	// DON'T USE IN PRODUCTION
 	public static RepositoryDAO getRepoInstanceInMemoryImpl(Class<?> clazz) {
-		logger.warn("\nUsing in MEMORY Store Repository DOESN'T KEEP DATA\nONLY For DEV Purpose!");
+		logger.warn("\nUsing in MEMORY Store Repo\nONLY For DEV Purpose!");
 		if (repoInstance == null) {
 			synchronized (SesameRepoInstance.class) {
 				if (repoInstance == null) {

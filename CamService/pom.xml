@@ -200,7 +200,7 @@
 			</activation>
 			<properties>
 				<sesame.url></sesame.url>
-				<sesame.repository>NEST</sesame.repository>
+				<sesame.repository>TEST</sesame.repository>
 				<sesame.namespace>http://www.msee-ip.eu/ontology/bivolino#</sesame.namespace>
 				<sesame.memory.store.data.dir>/data</sesame.memory.store.data.dir>
 				<sesame.rdf.file>/onthology/export.rdf</sesame.rdf.file>
@@ -214,9 +214,8 @@
 			<id>prod</id>
 			<properties>
 				<sesame.url>http://localhost:8180/openrdf-sesame/</sesame.url>
-				<sesame.repository>NEST</sesame.repository>
+				<sesame.repository>GHOST</sesame.repository>
 				<sesame.namespace>http://www.msee-ip.eu/ontology/bivolino#</sesame.namespace>
-				<sesame.memory.store.data.dir>/data</sesame.memory.store.data.dir>
 				<sesame.rdf.file>/onthology/export.rdf</sesame.rdf.file>
 				<!-- MEMORY or HTTP supported at the moment -->
 				<sesame.repo.type>HTTP</sesame.repo.type>

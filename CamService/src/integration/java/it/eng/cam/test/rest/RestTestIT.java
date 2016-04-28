@@ -5,8 +5,7 @@ import static com.eclipsesource.restfuse.Assert.assertOk;
 import java.util.Random;
 import java.util.ResourceBundle;
 
-import javax.ws.rs.PathParam;
-
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
 
@@ -19,93 +18,122 @@ import com.eclipsesource.restfuse.annotation.Context;
 import com.eclipsesource.restfuse.annotation.HttpTest;
 
 @RunWith(HttpJUnitRunner.class)
-public class RestTestIT {
+public class RestTestIT extends Assert {
 
 	@Rule
 	public Destination destination = getDestination();
 
 	@Context
 	private Response response;
-	
-	private static ResourceBundle finder = ResourceBundle.getBundle("cam-service");
-	private static ResourceBundle vocabulary = ResourceBundle.getBundle("vocabulary-integration");
 
+	private static ResourceBundle finder = ResourceBundle.getBundle("cam-service");
+	private static int random = getNextRandom();
 
 	private Destination getDestination() {
 		Destination destination = new Destination(this, finder.getString("destination.url.integration"));
 		RequestContext context = destination.getRequestContext();
-		context.addPathSegment("rootName", vocabulary.getString("rootName"))
-		.addPathSegment("className",  vocabulary.getString("className"))
-		.addPathSegment("classNameToCreate",  vocabulary.getString("classNameToCreate")+"_"+getNextRandom())
-		.addPathSegment("classNameToMove", vocabulary.getString("classNameToMove"))
-		.addPathSegment("classNameToDelete", vocabulary.getString("classNameToDelete"))
-		.addPathSegment("assetName", vocabulary.getString("assetName"))
-		.addPathSegment("assetNameToCreate", vocabulary.getString("assetNameToCreate")+"_"+getNextRandom())
-		.addPathSegment("assetModelNameToCreate", vocabulary.getString("assetModelNameToCreate")+"_"+getNextRandom())
-		.addPathSegment("ownerName", vocabulary.getString("ownerName"))
-		.addPathSegment("assetName2", vocabulary.getString("assetName2"))
-		.addPathSegment("assetName3", vocabulary.getString("assetName3"))
-		.addPathSegment("relationShipName", vocabulary.getString("relationShipName")+"_"+getNextRandom())
-		.addPathSegment("assetToDelete", vocabulary.getString("assetToDelete"))
-		.addPathSegment("parentNameAssetToDelete", vocabulary.getString("parentNameAssetToDelete"))
-		.addPathSegment("ownerNameToCreate", vocabulary.getString("ownerNameToCreate")+"_"+getNextRandom());
+		context.addPathSegment("rootName", "Thing").addPathSegment("classNameCreated", "New_Class_" + random)
+				.addPathSegment("classNameMoved", "New_Class_2_" + random)
+				.addPathSegment("assetNameCreated", "New_Asset_" + random)
+				.addPathSegment("assetNameCreated2", "New_Asset_2_" + random)
+				.addPathSegment("assetNameCreated3", "New_Asset_3_" + random)
+				.addPathSegment("assetModelNameCreated", "New_Model_" + random)
+				.addPathSegment("ownerNameCreated", "New_Owner_" + random)
+				.addPathSegment("ownerNameCreated2", "New_Owner_2_" + random)
+				.addPathSegment("relationShipNameCreated", "New_Relationship_" + random);
 		return destination;
 	}
 
-	@HttpTest(method = Method.GET, path = "/classes", order = 1)
-	
+	@HttpTest(method = Method.GET, path = "/", order = 1)
+	public void testSayHello() {
+		assertOk(response);
+		assertTrue(response.getBody(), true);
+	}
+
+	@HttpTest(method = Method.GET, path = "/classes", order = 2)
 	public void testGetClassHierarchy() {
+		try {
+			assertOk(response);
+		} catch (Exception e) {
+			assertFalse(e.getMessage(), true);
+		}
+	}
+
+	@HttpTest(method = Method.GET, path = "/classes/{rootName}", order = 3)
+	public void testGetIndividualsByClass() {
 		assertOk(response);
 	}
 
-	@HttpTest(method = Method.GET, path = "/classes/{rootName}", order = 2)
-	public void testGetIndividualsByClasses() {
-		assertOk(response);
-	}
-
-	@HttpTest(method = Method.POST, path = "/classes/{classNameToCreate}/{rootName}", order = 3)
+	// WARNING FAKE CONTENT IS NECESSARY for restfuse library more info at
+	// https://github.com/eclipsesource/restfuse/issues/42
+	@HttpTest(method = Method.POST, path = "/classes/{classNameCreated}/{rootName}", order = 4, content = "dummy")
 	public void testCreateClass() {
 		assertOk(response);
 	}
 
-	@HttpTest(method = Method.PUT, path = "/classes/{classNameToMove}/{className}", order = 4)
+	@HttpTest(method = Method.POST, path = "/classes/{classNameMoved}/{rootName}", order = 5, content = "dummy")
+	public void testCreateClass2() {
+		assertOk(response);
+	}
+
+	@HttpTest(method = Method.PUT, path = "/classes/{classNameMoved}/{classNameCreated}", order = 6, content = "dummy")
 	public void testMoveClass() {
 		assertOk(response);
 	}
 
-	//@HttpTest(method = Method.DELETE, path = "/classes/{classNameToMove}/{classNameToDelete}", order = 5)
-	public void testDeleteClass(@PathParam("name") String name) {
+	@HttpTest(method = Method.DELETE, path = "/classes/{classNameMoved}", order = 7)
+	public void testDeleteClass() {
 		assertOk(response);
 	}
 
-	@HttpTest(method = Method.GET, path = "/classes/{className}", order = 6)
+	@HttpTest(method = Method.GET, path = "/classes/{classNameCreated}", order = 8)
 	public void testGetIndividual() {
 		assertOk(response);
 	}
-	
-	
-	@HttpTest(method = Method.POST, path = "/classes/model/{className}/{assetModelNameToCreate}/{ownerName}", order = 7)
-	public void testCreateAssetModel(){
+
+	@HttpTest(method = Method.POST, path = "/owners/{ownerNameCreated}", order = 9, content = "dummy")
+	public void testCreateOwner() {
 		assertOk(response);
 	}
 
-	@HttpTest(method = Method.POST, path ="/classes/{assetNameToCreate}/{assetModelName}/{ownerName}", order = 8)
+	@HttpTest(method = Method.POST, path = "/owners/{ownerNameCreated2}", order = 10, content = "dummy")
+	public void testCreateOwner2() {
+		assertOk(response);
+	}
+
+	@HttpTest(method = Method.POST, path = "/classes/model/{assetModelNameCreated}/{classNameCreated}/{ownerNameCreated}", order = 11, content = "dummy")
+	public void testCreateAssetModel() {
+		assertOk(response);
+	}
+
+	@HttpTest(method = Method.POST, path = "/classes/{assetNameCreated}/{assetModelNameCreated}/{ownerNameCreated}", order = 12, content = "dummy")
 	public void testCreateAsset() {
 		assertOk(response);
 	}
 
-	@HttpTest(method = Method.PUT, path ="/classes/{relationShipName}/{assetName2}/{assetName3}", order = 9)
+	@HttpTest(method = Method.POST, path = "/classes/{assetNameCreated2}/{assetModelNameCreated}/{ownerNameCreated}", order = 13, content = "dummy")
+	public void testCreateAsset2() {
+		assertOk(response);
+	}
+	
+	@HttpTest(method = Method.POST, path = "/classes/{assetNameCreated3}/{assetModelNameCreated}/{ownerNameCreated}", order = 14, content = "dummy")
+	public void testCreateAsset3() {
+		assertOk(response);
+	}
+
+	@HttpTest(method = Method.PUT, path = "/classes/{relationShipNameCreated}/{assetNameCreated}/{assetNameCreated2}", order = 15, content = "dummy")
 	public void testSetRelationship() {
 		assertOk(response);
 	}
 
-	//@HttpTest(method = Method.DELETE, path ="/classes/{parentNameAssetToDelete}/{assetNameToDelete}", order = 11)
+	@HttpTest(method = Method.DELETE, path = "/classes/individual/{assetNameCreated3}", order = 16)
 	public void testDeleteIndividual() {
 		assertOk(response);
 	}
-	
-	//TODO
-	//@HttpTest(method = Method.DELETE, path ="/classes/{propertyName}/{assetName}", order = 16)
+
+	// TODO
+	// @HttpTest(method = Method.DELETE, path
+	// ="/classes/{propertyName}/{assetName}", order = 0)
 	public void testRemoveProperty() {
 		assertOk(response);
 	}
@@ -114,43 +142,31 @@ public class RestTestIT {
 	public void testGetIndividuals() {
 		assertOk(response);
 	}
-	
 
-//	// TODO Da affinare
-//	@GET
-//	@Path("/models")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public List<IndividualItem> getModelsIndividuals() {
-//		try {
-//			return CAMRestImpl.getIndividuals(SesameRepoInstance.getRepoInstance(getClass()));
-//		} catch (Exception e) {
-//			logger.error(e);
-//			return null;
-//		} finally {
-//			SesameRepoInstance.releaseRepoDaoConn();
-//		}
-//		// necessita di un filtro ulteriore
-//	}
-
-	@HttpTest(method = Method.GET, path = "/owners", order = 0)
+	@HttpTest(method = Method.GET, path = "/owners", order = 18)
 	public void testGetOwners() {
 		assertOk(response);
 	}
 
-	@HttpTest(method = Method.POST, path = "/owners/{ownerNameToCreate}", order = 0)
-	public void testCreateOwner() {
-		assertOk(response);
-	}
-
-	//@HttpTest(method = Method.DELETE, path = "/owners/{ownerName}", order = 0)
+	@HttpTest(method = Method.DELETE, path = "/owners/{ownerNameCreated2}", order = 19)
 	public void testDeleteOwner() {
 		assertOk(response);
 	}
-		
-	private int getNextRandom() {
+
+	//@HttpTest(method = Method.POST, path = "/classes/attribute",
+//			content = "{\"name\":\"New_Attribute_1\",\"individualName\":\"Massi_Asset\",\"value\":\"1354\",\"type\":\"java.lang.Integer\"}", order = 20)
+	public void testSetAttribute() {
+		assertOk(response);
+	}
+
+	@HttpTest(method = Method.GET, path = "/models", order = 21)
+	public void testGetModels() {
+		assertOk(response);
+	}
+
+	private static int getNextRandom() {
 		Random rand = new Random();
 		return Math.abs(rand.nextInt(Integer.MAX_VALUE));
 	}
-
 
 }

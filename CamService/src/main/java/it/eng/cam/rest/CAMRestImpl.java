@@ -2,14 +2,14 @@ package it.eng.cam.rest;
 
 import java.util.List;
 
-import javax.ws.rs.PathParam;
-
 import it.eng.ontorepo.ClassItem;
 import it.eng.ontorepo.IndividualItem;
 import it.eng.ontorepo.PropertyValueItem;
 import it.eng.ontorepo.RepositoryDAO;
 
 public class CAMRestImpl {
+
+	public static final String PREFIX = "http://www.w3.org/2002/07/owl#";
 
 	public static ClassItem getClassHierarchy(RepositoryDAO dao) {
 		return dao.getClassHierarchy();
@@ -24,14 +24,20 @@ public class CAMRestImpl {
 	}
 
 	public static List<IndividualItem> getIndividuals(RepositoryDAO dao, String className) {
+		if(!isNormalized(className))
+			className = normalize(className);
 		return dao.getIndividuals(className);
 	}
 
 	public static IndividualItem getIndividual(RepositoryDAO dao, String className) {
+		if(!isNormalized(className))
+			className = normalize(className);
 		return dao.getIndividual(className);
 	}
 
 	public static void createClass(RepositoryDAO dao, String name, String parentName) {
+		if(!isNormalized(parentName))
+			parentName = normalize(parentName);
 		dao.createClass(name, parentName);
 	}
 
@@ -92,4 +98,25 @@ public class CAMRestImpl {
 		dao.setAttribute(name, individualName, value, Class.forName(type));
 	}
 
+	/**
+	 *  A name is normalized if contains the prefix http://www.w3.org/2002/07/owl#
+	 * @param originalName 
+	 * @return
+	 */
+	public static String normalize(String originalName) {
+		return PREFIX + originalName;
+	}
+	
+	public static boolean isNormalized(String value){
+		return value.contains(PREFIX);
+	}
+
+	public static String deNormalize(String normalizedName) {
+		String[] split = normalizedName.split(PREFIX);
+		if (null != split && split.length > 0)
+			return split[1];
+		return normalizedName;
+	}
+	
+	
 }
