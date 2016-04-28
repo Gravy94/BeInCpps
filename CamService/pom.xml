@@ -214,7 +214,7 @@
 			<id>prod</id>
 			<properties>
 				<sesame.url>http://localhost:8180/openrdf-sesame/</sesame.url>
-				<sesame.repository>GHOST</sesame.repository>
+				<sesame.repository>DEFAULT</sesame.repository>
 				<sesame.namespace>http://www.msee-ip.eu/ontology/bivolino#</sesame.namespace>
 				<sesame.rdf.file>/onthology/export.rdf</sesame.rdf.file>
 				<!-- MEMORY or HTTP supported at the moment -->

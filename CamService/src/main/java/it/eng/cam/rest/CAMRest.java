@@ -281,7 +281,12 @@ public class CAMRest extends ResourceConfig {
 	@GET
 	@Produces("text/html")
 	public String sayHello() {
-		return "CAMService started!!!";
+		String newLine ="<br/>";
+		StringBuilder html = new StringBuilder();
+		html.append("CAMService started!!!");
+		html.append(newLine);
+		html.append("<a href=\"http://localhost:8080/CAMService/classes\" target=\"blank\">GET /classes getClassHierarchy </a> ");
+		return html.toString();
 	}
 
 }
