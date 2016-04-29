@@ -1,6 +1,6 @@
 # BeInCpps Project - CAM Service
 ## Usage
-###Development environment
+###Developer environment
 This installation use **Sesame Repository in Memory** and **Apache Tomcat 7 Maven embedded** 
 ```bash
 $ git clone https://github.com/ascatox/BeInCpps.git
@@ -12,7 +12,7 @@ $ mvn verify
 ```
 `mvn verify` execute integration tests!
 
-###Production environment
+###User environment
 Download and install [Apache Tomcat](https://tomcat.apache.org/download-80.cgi) (version >= **7**):
 ```bash
 $ wget http://mirrors.muzzy.it/apache/tomcat/tomcat-8/v8.0.33/bin/apache-tomcat-8.0.33.zip
