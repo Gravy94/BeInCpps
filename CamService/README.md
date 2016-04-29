@@ -39,7 +39,7 @@ $ cd ../CAMService
 $ mvn package -P prod
 $ mvn verify
 ```
-To skip Unit Tests use ``-DskipTests`` maven parameter
+To skip Unit Tests use ``-DskipTests`` maven parameter.
 
 Copy the CAMService.war into a Tomcat installation.
 ```bash
