@@ -1,7 +1,7 @@
 # BeInCpps Project - CAM Service
 ## Usage
 ###Development environment
-**This installation use Sesame Repository in Memory and Apache Tomcat 7 maven embedded** 
+This installation use **Sesame Repository in Memory** and **Apache Tomcat 7 maven embedded** 
 ```bash
 $ git clone https://github.com/ascatox/BeInCpps.git
 $ cd BeInCpps/OntologyRepo
