@@ -8,6 +8,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -17,6 +18,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -289,7 +291,7 @@ public class CAMRest extends ResourceConfig {
 
 	@GET
 	@Produces("text/html")
-	public String summary() {
+	public String summary(@Context HttpServletRequest httpRequest) {
 		String content ="";
 		StringBuilder contentBuilder = new StringBuilder();
 		try {
@@ -302,7 +304,12 @@ public class CAMRest extends ResourceConfig {
 			}
 			in.close();
 			content = contentBuilder.toString();
-			content = content.replaceAll("camServiceUrl", "http://localhost:8080/CAMService");
+			String serverUrl = httpRequest.getServerName();
+			int serverPort = httpRequest.getServerPort();
+			String protocol = "http";
+			if(serverPort == 443)
+				protocol="https";
+			content = content.replaceAll("camServiceUrl", protocol+"://"+serverUrl+":"+serverPort+"/CAMService");
 		} catch (IOException e) {
 			logger.error(e);
 		} catch (URISyntaxException e) {
