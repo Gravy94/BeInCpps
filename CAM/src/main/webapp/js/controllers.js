@@ -60,7 +60,7 @@ camApp.controller('homeController', [
 			$scope.loadAsset = function(){
 //				alert($scope.currentNode); //per recuperare il nodo da passare in input a servizio rest
 				if($scope.currentNode.classId == 'exclass'){
-					$http.get('resources/asset.json').then(function(response) {
+					$http.get('http://localhost:8080/CAMService/assets').then(function(response) {
 						$scope.assetList = $scope.formatAssetListTable(response.data);
 					});
 				}else{
@@ -83,45 +83,3 @@ camApp.controller('homeController', [
 			};
 		} ]);
 
-camApp.controller('forecastController', [
-		'$scope',
-		'$resource',
-		'$routeParams',
-		'cityService',
-		function($scope, $resource, $routeParams, cityService) {
-
-			$scope.city = cityService.city;
-
-			$scope.days = $routeParams.days || '2';
-
-			$scope.weatherAPI = $resource(
-					"http://api.openweathermap.org/data/2.5/forecast/daily", {
-						callback : "JSON_CALLBACK"
-					}, {
-						get : {
-							method : "JSONP"
-						}
-					});
-
-			$scope.weatherResult = $scope.weatherAPI.get({
-				q : $scope.city,
-				cnt : $scope.days
-			});
-
-			$scope.convertToFahrenheit = function(degK) {
-
-				return Math.round((1.8 * (degK - 273)) + 32);
-
-			}
-
-			$scope.convertToCelsius = function(degK) {
-				return Math.round(degK - 273.15);
-			}
-
-			$scope.convertToDate = function(dt) {
-
-				return new Date(dt * 1000);
-
-			};
-
-		} ]);
