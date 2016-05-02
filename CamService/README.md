@@ -37,7 +37,7 @@ $ cd BeInCpps/OntologyRepo
 $ mvn install
 $ cd ../CAMService
 $ mvn package -P prod
-$ mvn verify
+$ mvn verify opyional
 ```
 To skip Unit Tests use ``-DskipTests`` maven parameter.
 
