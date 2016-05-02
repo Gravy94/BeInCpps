@@ -60,14 +60,11 @@ camApp.controller('homeController', [
 			$scope.loadAsset = function(){
 //				alert($scope.currentNode); //per recuperare il nodo da passare in input a servizio rest
 				if($scope.currentNode.classId == 'exclass'){
-					$http.get('http://localhost:8080/CAMService/assets').then(function(response) {
-						$scope.assetList = $scope.formatAssetListTable(response.data);
-					});
+					AssetManager.createAssets($http);
+                    $scope.assetList = AssetManager.getAssets();
+                    console.log($scope.assetList);
 				}else{
-					
-					$http.get('resources/asset.json').then(function(response) {
-						$scope.assetList = [];
-					});
+				    $scope.assetList=[]
 				}
 			}
 			
