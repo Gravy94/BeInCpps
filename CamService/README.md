@@ -1,4 +1,4 @@
-# BeInCpps Project - CAM Service
+# BEinCPPS Project - CAM Service
 ## Usage
 ###Developer environment
 This installation use **Sesame Repository in Memory** and **Apache Tomcat 7 Maven embedded** 
