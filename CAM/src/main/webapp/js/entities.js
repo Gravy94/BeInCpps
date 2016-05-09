@@ -1,26 +1,23 @@
 "use strict";
-var AssetManager = (function(){
-		var $http = null;
-        var assets = [];
-		
-        var createAssets = function($httpExt){
-            $http = $httpExt;
-            $http.get('http://localhost:8080/CAMService/assets')
+var EntityManager = (function(){
+    var BACK_END_URL='http://localhost:8080/CAMService';
+        var $http = null;
+        var $scope = null;
+    
+        var getAssets = function(){
+            $http.get(BACK_END_URL+'/classes') //http://localhost:8080/CAMService/assets
                 //TODO Address
             .success(function (data) {
-                create(data);
+                $scope.assetList= formatAssetListTable(createAssets(data));
             })
             .error(function() { 
 				console.log("Error encountered :-("); 
-			});
+        	});
             
-    	}
-        
-        var getAssets = function(){
-            return assets;
         }
 		
-        var create = function(data){
+        var createAssets = function(data){
+            var assets=[];
             for (var i in data){
                 var asset  = {
                     asset: data[i].normalizedName,
@@ -33,27 +30,88 @@ var AssetManager = (function(){
                 }   
                 assets.push(asset);
             }
+            return assets;
+        }
+		
+        
+        var getClasses = function(){
+            $http.get(BACK_END_URL+'/classes') //http://localhost:8080/CAMService/assets
+                //TODO Address
+            .success(function (data) {
+                $scope.classList = data;
+            })
+            .error(function() { 
+				console.log("Error encountered :-("); 
+        	});
             
         }
-		
-	    var reset = function(){
-	    	$http = null;
+        
+         var getChildrenForClass = function(className){
+            $http.get(BACK_END_URL+'/classes/'+className) //http://localhost:8080/CAMService/assets
+                //TODO Address
+            .success(function (data) {
+               
+            })
+            .error(function() { 
+				console.log("Error encountered :-("); 
+        	});
+        }
+        
+         var createClasses = function(data){
+            var classes=[];
+            for (var i in data){
+                 var classItem  = {
+                  className: data[i].normalizedName,
+                  classId: data[i].normalizedName ,
+                  children: function(){
+                    $http.get(BACK_END_URL+'/classes/'+data[i].normalizedName).then(function(subData){
+                        
+                    });        
+                  }
+                }   
+                classes.push(classItem);
+            }
+            return classes;
         }
 	    
+        
+        
+        
+        var reset = function(){
+	    	$scope = null;
+            $http = null;
+        }
+        
+       var formatAssetListTable = function(data){
+				if(!data)
+					return [];
+				for(var i = 0; i <data.length; i++){
+					data[i].action = '<div><i data-toggle="tooltip" title="Delete asset model" class="fa fa-remove cam-table-button"></i><i data-toggle="tooltip" title="Open detail" class="fa fa-search cam-table-button"></i>';
+					if(data[i].isModel == 'true')
+						data[i].action +='<i data-toggle="tooltip" title="Create new asset from this model" class="fa fa-plus cam-table-button"></i></div>';
+				}
+				return data;
+		}
+	    
+       var init = function($scopeExt, $httpExt){
+         $scope = $scopeExt;
+         $http = $httpExt;
+       }
 		//Costructor
-		var AssetManager = function() {
-           	reset();
+		var EntityManager = function() {
+                
 		}
 		
-	    AssetManager.prototype = {
+	    EntityManager.prototype = {
 	       //constructor
-	    	constructor : AssetManager,
+	    	constructor : EntityManager,
 	    	reset: reset,
-            createAssets: createAssets,
-            getAssets: getAssets
+            init: init,
+            getAssets: getAssets,
+            getClasses: getClasses
 	   	 }
-	    return AssetManager;
+	    return EntityManager;
 	})();
 	
-	var AssetManager = new AssetManager();
+	var entityManager = new EntityManager();
 

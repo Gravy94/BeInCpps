@@ -31,7 +31,6 @@ import it.eng.ontorepo.ClassItem;
 import it.eng.ontorepo.IndividualItem;
 import it.eng.ontorepo.RepositoryDAO;
 
-
 public class Test extends Assert {
 
 	RepositoryDAO dao;
@@ -64,6 +63,13 @@ public class Test extends Assert {
 	}
 
 	@org.junit.Test
+	public void getClasses() {
+		List<ClassItem> classes = CAMRestImpl.getClasses(dao);
+		assertNotNull("Null classes", classes);
+		assertFalse("Empty classes list", classes.isEmpty());
+	}
+
+	@org.junit.Test
 	public void getIndividuals() {
 		List<IndividualItem> individuals = CAMRestImpl.getIndividuals(dao);
 		assertNotNull("Null individuals", individuals);
@@ -79,20 +85,11 @@ public class Test extends Assert {
 		// assertFalse(owners.isEmpty());
 	}
 
-	//
-	@org.junit.Test
-	public void getIndividualsForClass() {
-		String className = dao.getClassHierarchy().getClassName();
-		List<IndividualItem> individuals = CAMRestImpl.getIndividuals(dao, className);
-		assertNotNull("Individuals for class " + className + " are null", individuals);
-		// assertFalse(individuals.isEmpty());
-	}
-
-	//TODO Always Fail :-(
-	//@org.junit.Test 
+	// TODO Always Fail :-(
+	// @org.junit.Test
 	public void getIndividualForClassAndAsset() {
 		String className = dao.getClassHierarchy().getClassName();
-		String assetName = "New_Asset_"+getNextRandom();
+		String assetName = "New_Asset_" + getNextRandom();
 		IndividualItem individual = CAMRestImpl.getIndividual(dao, className);
 		assertNotNull("Individuals for class " + className + " are null", individual);
 	}
@@ -163,7 +160,7 @@ public class Test extends Assert {
 		List<ClassItem> classInserted = subClasses.stream().filter(csi -> csi.getClassName().equals(className))
 				.collect(Collectors.toList());
 		List<ClassItem> classInserted2 = null;
-		;
+
 		try {
 			classInserted2 = classInserted.get(0).getSubClasses().stream()
 					.filter(csi -> csi.getClassName().equals(className2)).collect(Collectors.toList());
@@ -174,6 +171,33 @@ public class Test extends Assert {
 		assertFalse("Move class: element moved (empty) not retrieved for className: " + className,
 				classInserted2.isEmpty());
 		assertTrue("Move class: element moved found :-)", classInserted2.size() == 1);
+	}
+
+	@org.junit.Test
+	public void getIndividualsForClass() {
+		String className = "NewClass_" + getNextRandom();
+		String rootName = dao.getClassHierarchy().getClassName(); // Thing
+		try {
+			CAMRestImpl.createClass(dao, className, rootName);
+		} catch (Exception e) {
+			assertFalse(e.getMessage(), true);
+		}
+		String className2 = "NewClass_" + getNextRandom();
+		try {
+			CAMRestImpl.createClass(dao, className2, rootName);
+		} catch (Exception e) {
+			assertFalse(e.getMessage(), true);
+		}
+		tearDown();
+		setUp();
+		try {
+			CAMRestImpl.moveClass(dao, className2, className);
+		} catch (Exception e) {
+			assertFalse(e.getMessage(), true);
+		}
+		List<ClassItem> classes = CAMRestImpl.getIndividuals(dao, className);
+		assertNotNull("classes for class " + className + " are null", classes);
+		assertFalse("Empty classes list", classes.isEmpty());
 	}
 
 	@org.junit.Test
@@ -408,8 +432,6 @@ public class Test extends Assert {
 		return Math.abs(rand.nextInt(Integer.MAX_VALUE));
 	}
 
-	
-	
 	@SuppressWarnings("unused")
 	private void printDocument(Document doc, String file) {
 		try {

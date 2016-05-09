@@ -51,7 +51,7 @@ public class RestTestIT extends Assert {
 	}
 
 	@HttpTest(method = Method.GET, path = "/classes", order = 2)
-	public void testGetClassHierarchy() {
+	public void testGetClasses() {
 		try {
 			assertOk(response);
 		} catch (Exception e) {
@@ -142,13 +142,18 @@ public class RestTestIT extends Assert {
 	public void testGetIndividuals() {
 		assertOk(response);
 	}
+	
+	@HttpTest(method = Method.GET, path = "/assets/{assetNameCreated}", order = 18)
+	public void testGetIndividualAttributes() {
+		assertOk(response);
+	}
 
-	@HttpTest(method = Method.GET, path = "/owners", order = 18)
+	@HttpTest(method = Method.GET, path = "/owners", order = 19)
 	public void testGetOwners() {
 		assertOk(response);
 	}
 
-	@HttpTest(method = Method.DELETE, path = "/owners/{ownerNameCreated2}", order = 19)
+	@HttpTest(method = Method.DELETE, path = "/owners/{ownerNameCreated2}", order = 20)
 	public void testDeleteOwner() {
 		assertOk(response);
 	}
@@ -159,7 +164,7 @@ public class RestTestIT extends Assert {
 		assertOk(response);
 	}
 
-	@HttpTest(method = Method.GET, path = "/models", order = 21)
+	@HttpTest(method = Method.GET, path = "/models", order = 22)
 	public void testGetModels() {
 		assertOk(response);
 	}

@@ -34,14 +34,12 @@ camApp.controller('homeController', [
 				"bInfo" : true,
 				"bDestroy" : true
 			};
+            
+            entityManager.init($scope, $http);
 			
 			$scope.assetList = [];
-
-//			$http.get('resources/asset.json').then(function(response) {
-//				$scope.assetList = $scope.formatAssetListTable(response.data);
-//			});
-			
-			$scope.classList1 = [ {
+   
+            $scope.classList1 = [ {
 				"className" : "Root",
 				"classId" : "root",
 				"children" : [ {
@@ -50,33 +48,25 @@ camApp.controller('homeController', [
 					"children" : []
 				} ]
 			} ];
+            
+            $scope.classList1 =
 
 			// roleList1 to treeview
 			$scope.classList = $scope.classList1;
+          
 			
+            //EntityManager.getClasses($http, $scope);
 			
 			//funzioni di utilità
 			
 			$scope.loadAsset = function(){
 //				alert($scope.currentNode); //per recuperare il nodo da passare in input a servizio rest
 				if($scope.currentNode.classId == 'exclass'){
-					AssetManager.createAssets($http);
-                    $scope.assetList = AssetManager.getAssets();
-                    console.log($scope.assetList);
-				}else{
+					entityManager.getAssets();
+                }else{
 				    $scope.assetList=[]
 				}
 			}
-			
-			$scope.formatAssetListTable = function(data){
-				if(!data)
-					return [];
-				for(var i = 0; i <data.length; i++){
-					data[i].action = '<div><i data-toggle="tooltip" title="Delete asset model" class="fa fa-remove cam-table-button"></i><i data-toggle="tooltip" title="Open detail" class="fa fa-search cam-table-button"></i>';
-					if(data[i].isModel == 'true')
-						data[i].action +='<i data-toggle="tooltip" title="Create new asset from this model" class="fa fa-plus cam-table-button"></i></div>';
-				}
-				return data;
-			};
+		
 		} ]);
 

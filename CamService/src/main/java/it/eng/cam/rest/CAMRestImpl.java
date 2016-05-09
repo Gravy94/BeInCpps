@@ -1,6 +1,7 @@
 package it.eng.cam.rest;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import it.eng.ontorepo.ClassItem;
 import it.eng.ontorepo.IndividualItem;
@@ -11,8 +12,14 @@ public class CAMRestImpl {
 
 	public static final String PREFIX = "http://www.w3.org/2002/07/owl#";
 
+	
 	public static ClassItem getClassHierarchy(RepositoryDAO dao) {
 		return dao.getClassHierarchy();
+	}
+	
+	public static List<ClassItem> getClasses(RepositoryDAO dao){
+		ClassItem root = getClassHierarchy(dao);
+		return root.getSubClasses();
 	}
 
 	public static List<IndividualItem> getIndividuals(RepositoryDAO dao) {
@@ -23,10 +30,17 @@ public class CAMRestImpl {
 		return dao.getOwners();
 	}
 
-	public static List<IndividualItem> getIndividuals(RepositoryDAO dao, String className) {
-		if(!isNormalized(className))
-			className = normalize(className);
-		return dao.getIndividuals(className);
+//TODO
+//	public static List<IndividualItem> getIndividuals(RepositoryDAO dao, String className) {
+//		if(!isNormalized(className))
+//			className = normalize(className);
+//		return dao.getIndividuals(className);
+//	}
+	
+	public static List<ClassItem> getIndividuals(RepositoryDAO dao, String className) {
+		List<ClassItem> subClasses = dao.getClassHierarchy().getSubClasses();
+		return subClasses.stream().filter(cls -> cls.getClassName().equals(className))
+				.collect(Collectors.toList());
 	}
 
 	public static IndividualItem getIndividual(RepositoryDAO dao, String className) {

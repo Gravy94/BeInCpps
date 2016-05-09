@@ -30,6 +30,7 @@ import it.eng.cam.rest.sesame.Attribute;
 import it.eng.cam.rest.sesame.SesameRepoInstance;
 import it.eng.ontorepo.ClassItem;
 import it.eng.ontorepo.IndividualItem;
+import it.eng.ontorepo.PropertyValueItem;
 
 @Path("/")
 public class CAMRest extends ResourceConfig {
@@ -42,9 +43,9 @@ public class CAMRest extends ResourceConfig {
 	@GET
 	@Path("/classes")
 	@Produces(MediaType.APPLICATION_JSON)
-	public ClassItem getClassHierarchy() {
+	public List<ClassItem> getClassHierarchy() {
 		try {
-			return CAMRestImpl.getClassHierarchy(SesameRepoInstance.getRepoInstance(getClass()));
+			return CAMRestImpl.getClasses(SesameRepoInstance.getRepoInstance(getClass()));
 		} catch (Exception e) {
 			logger.error(e);
 			throw new WebApplicationException(e.getMessage());
@@ -56,7 +57,7 @@ public class CAMRest extends ResourceConfig {
 	@GET
 	@Path("/classes/{className}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<IndividualItem> getIndividuals(@PathParam("className") String className) {
+	public List<ClassItem> getIndividuals(@PathParam("className") String className) {
 		try {
 			return CAMRestImpl.getIndividuals(SesameRepoInstance.getRepoInstance(getClass()), className);
 		} catch (Exception e) {
@@ -230,6 +231,21 @@ public class CAMRest extends ResourceConfig {
 			SesameRepoInstance.releaseRepoDaoConn();
 		}
 	}
+	
+	@GET
+	@Path("/assets/{assetName}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<PropertyValueItem> getIndividualAttributes(@PathParam("assetName") String assetName) {
+		try {
+			return CAMRestImpl.getIndividualAttributes(SesameRepoInstance.getRepoInstance(getClass()), assetName);
+		} catch (Exception e) {
+			logger.error(e);
+			throw new WebApplicationException(e.getMessage());
+		} finally {
+			SesameRepoInstance.releaseRepoDaoConn();
+		}
+	}
+
 
 	// TODO Da affinare
 	@GET
