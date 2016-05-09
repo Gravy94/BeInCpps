@@ -207,6 +207,8 @@
 				<!-- MEMORY or HTTP supported at the moment -->
 				<sesame.repo.type>MEMORY</sesame.repo.type>
 				<destination.url.integration>http://localhost:8080/${artifactId}/</destination.url.integration>
+				<!-- CORS API ENABLING true or false  -->
+				<cors.api>true</cors.api>
 			</properties>
 		</profile>
 		<!-- Production environment @ production server -->
@@ -221,6 +223,8 @@
 				<!-- MEMORY or HTTP supported at the moment -->
 				<sesame.repo.type>HTTP</sesame.repo.type>
 				<destination.url.integration>http://localhost:8080/${artifactId}/</destination.url.integration>
+				<!-- CORS API ENABLING true or false  -->
+				<cors.api>true</cors.api>
 			</properties>
 		</profile>
 

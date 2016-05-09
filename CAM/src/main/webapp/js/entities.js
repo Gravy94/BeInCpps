@@ -5,10 +5,14 @@ var AssetManager = (function(){
 		
         var createAssets = function($httpExt){
             $http = $httpExt;
-            $http.get('http://localhost:8080/CAMService/assets') //TODO Address
+            $http.get('http://localhost:8080/CAMService/assets')
+                //TODO Address
             .success(function (data) {
                 create(data);
-            });
+            })
+            .error(function() { 
+				console.log("Error encountered :-("); 
+			});
             
     	}
         
@@ -23,8 +27,9 @@ var AssetManager = (function(){
                     class: data[i].className,
                     model: data[i].individualName,
                     owner: '',
-                    created: new Date().toDateString,
-                    isModel: true
+                    created: '2016-06-01',
+                    isModel: true,
+                    action :'x'
                 }   
                 assets.push(asset);
             }
