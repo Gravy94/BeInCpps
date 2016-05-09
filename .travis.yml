@@ -1,4 +1,5 @@
 language: java
 java: 
 - oraclejdk8
-script: cd CamService && mvn test
+# Configuration only For CamService
+script: cd OntologyRepo && mvn install && cd ../CamService && mvn test
