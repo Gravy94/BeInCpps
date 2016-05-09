@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/ascatox/BeInCpps.svg?branch=master)](https://travis-ci.org/ascatox/BeInCpps)
 # BEinCPPS Project - CAM Service
 ## Usage
 ###Developer environment
