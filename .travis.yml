@@ -1,3 +1,4 @@
 language: java
-java: - oraclejdk8
+java: 
+- oraclejdk8
 script: cd CamService && mvn test
