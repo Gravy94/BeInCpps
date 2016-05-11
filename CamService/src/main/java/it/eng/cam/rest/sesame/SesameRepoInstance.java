@@ -102,7 +102,7 @@ public class SesameRepoInstance {
 
 	private static void addRdfFileToInstance(Class<?> clazz, boolean forceAdd) {
 		if (null == repoInstance)
-			logger.error("Impossible to get a Repository connection use getRepoInstance()");
+			logger.error("Impossible to get a Repository connection! Use getRepoInstance()");
 		try {
 			URL url = clazz.getResource(SESAME_RDF_FILE);
 			File file = new File(url.toURI());

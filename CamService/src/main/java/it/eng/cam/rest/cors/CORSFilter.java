@@ -18,7 +18,7 @@ public class CORSFilter implements ContainerResponseFilter {
 	@Override
 	public void filter(ContainerRequestContext request, ContainerResponseContext response) throws IOException {
 		ResourceBundle finder = ResourceBundle.getBundle("cam-service");
-		if (!finder.getString("cors.api").equals("true"))
+		if (!finder.getString("cors.api").equalsIgnoreCase("true"))
 			return;
 		response.getHeaders().add("Access-Control-Allow-Origin", "*");
 		response.getHeaders().add("Access-Control-Allow-Headers", "origin, content-type, accept, authorization");
