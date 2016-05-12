@@ -23,7 +23,7 @@ $ chmod +x ./apache-tomcat-8.0.33/bin/*.sh
 
 [Download](https://sourceforge.net/projects/sesame/files/Sesame%204/4.1.1/openrdf-sesame-4.1.1-sdk.zip/download) and copy **sesame and openrdf-workbench** war files, inside installed Tomcat:
 ```bash
-$ wget https://sourceforge.net/projects/sesame/files/Sesame%204/4.1.1/openrdf-sesame-4.1.1-sdk.zip/download
+$ wget http://downloads.sourceforge.net/project/sesame/Sesame%204/4.1.1/openrdf-sesame-4.1.1-sdk.zip?r=&ts=1463062101&use_mirror=tenet
 $ unzip openrdf-sesame-4.1.1-sdk.zip
 $ cp ./openrdf-sesame-4.1.1/war/*.war ./apache-tomcat-8.0.33/webapps
 $ ./apache-tomcat-8.0.33/bin/startup.sh
